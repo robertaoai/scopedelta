@@ -4,12 +4,14 @@ import { useState, useTransition } from "react";
 
 interface ChangeRequestFormProps {
   baselineId: string;
+  baselineName: string;
   baselineScopeText: string;
   onCreated: () => void;
 }
 
 export function ChangeRequestForm({
   baselineId,
+  baselineName,
   baselineScopeText,
   onCreated,
 }: ChangeRequestFormProps) {
@@ -51,6 +53,7 @@ export function ChangeRequestForm({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             baseline_scope_text: baselineScopeText,
+            baseline_name: baselineName,
             request_title: title,
             request_description: description,
           }),

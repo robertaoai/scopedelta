@@ -129,7 +129,8 @@ function computeOverlap(
 function analyzeRequest(
   baselineScopeText: string,
   requestTitle: string,
-  requestDescription: string
+  requestDescription: string,
+  projectName: string = "[Baseline Project]"
 ): AnalysisResult {
   const exclusions = findExclusions(baselineScopeText);
   const inclusions = findInclusions(baselineScopeText);
@@ -283,7 +284,7 @@ function analyzeRequest(
       .join("\n");
 
     change_request_document = `CHANGE REQUEST
-Project: [Baseline Project]
+Project: ${projectName}
 Date: ${today}
 Submitted by: [Requestor]
 
@@ -341,7 +342,7 @@ ${
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { baseline_scope_text, request_title, request_description } = body;
+    const { baseline_scope_text, baseline_name, request_title, request_description } = body;
 
     if (!baseline_scope_text || !request_title || !request_description) {
       return NextResponse.json(
@@ -353,10 +354,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const projectName = baseline_name || "[Baseline Project]";
+
     const result = analyzeRequest(
       baseline_scope_text,
       request_title,
-      request_description
+      request_description,
+      projectName
     );
 
     return NextResponse.json(result);

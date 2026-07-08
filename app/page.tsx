@@ -276,6 +276,7 @@ export default function Home() {
                         </div>
                         <ChangeRequestForm
                           baselineId={selectedBaseline.id}
+                          baselineName={selectedBaseline.name}
                           baselineScopeText={selectedBaseline.scope_text}
                           onCreated={() => fetchChangeRequests(selectedBaseline.id)}
                         />
